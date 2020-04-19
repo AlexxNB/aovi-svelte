@@ -2,8 +2,10 @@ import {aovi} from 'aovi';
 import {writable,derived} from 'svelte/store';
 
 const glCustomValidators = [];
+const reserved = ['err','valid'];
+let id = 0;
 
-export function validate(obj){
+export function aoviSvelte(obj){
     if(obj.err || obj.valid) throw new Error('".err" and ".valid" properties are reserved for internal use');
     clearErrors(obj);
     const {subscribe,set,update} = writable(obj);
@@ -29,6 +31,9 @@ export function validate(obj){
             return derived(this,$obj => {
                 return chk(get_aovi($obj).check(name).required()).valid;
             });
+        },
+        toObject(){
+            return Object.entries(obj).reduce((o,[n,v])=>reserved.includes(n) ? o : (o[n]=v,o),{})
         }
     }
 }
@@ -45,7 +50,6 @@ function get_aovi(obj){
     return custom_aovi;
 }
 
-let id=0;
 function addError(obj,error,name){
     if(name && !obj.hasOwnProperty(name)) return console.warn(`Got unknown property '${name}'`)
     obj.err[name||`noname_${id++}`] = error;
@@ -54,7 +58,7 @@ function addError(obj,error,name){
 
 function clearErrors(obj){
     obj.err = Object.keys(obj)
-        .filter(n=>!['err','valid'].includes(n))
+        .filter(n=>!reserved.includes(n))
         .reduce((o,name)=>(o[name]=false,o),{});
     obj.err.toArray = ()=>err2Array(obj.err);
     obj.valid = true;

@@ -1,5 +1,5 @@
 {
-  "name": "svelte-eventbus",
+  "name": "aovi-svelte",
   "svelte": "dist/aovistore.svelte.js",
   "module": "dist/aovistore.mjs",
   "main": "dist/aovistore.js",
@@ -19,26 +19,27 @@
   },
   "keywords": [
     "svelte",
-    "eventbus",
-    "events"
+    "aovi",
+    "validation",
+    "form",
+    "validator"
   ],
   "files": [
-    "src",
     "dist"
   ],
-  "version": "0.1.1",
-  "description": "Simple eventbus realization based on internal Svelte's tools only.",
+  "version": "0.1.0",
+  "description": "Easy using Aovi in your Svelte apps.",
   "dependencies": {
     "aovi": "^1.4.1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlexxNB/svelte-eventbus.git"
+    "url": "git+https://github.com/AlexxNB/aovi-svelte.git"
   },
   "author": "Alexey Schebelev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlexxNB/svelte-eventbus/issues"
+    "url": "https://github.com/AlexxNB/aovi-svelte/issues"
   },
-  "homepage": "https://github.com/AlexxNB/svelte-eventbus#readme"
+  "homepage": "https://github.com/AlexxNB/aovi-svelte#readme"
 }

@@ -1,14 +1,12 @@
 <script>
-    import {validate} from './../dist/aovistore.svelte.js';
+    import {aoviSvelte} from './../dist/aovistore.svelte.js';
 
-    const vld = validate({
+    const vld = aoviSvelte({
         user: '',
         password: ''
     });
 
-    const good_password = vld.checker('password',a => a
-        .minLength(4)
-    );
+    const good_password = vld.checker('password',a => a.minLength(4));
 
     function doSubmit(){
         vld.aovi

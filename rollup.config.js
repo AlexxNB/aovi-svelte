@@ -12,12 +12,22 @@ bundles.push({
 	input: 'src/index.js',
 	output: [
 		{ file: pkg.module, 'format': 'es' },
-		{ file: pkg.svelte, 'format': 'es', external:['svelte','svelte/store'] },
 		{ file: pkg.main, 'format': 'cjs'}
 	],
 	plugins: [
-		svelte(),
-		resolve(),
+		resolve({dedupe: ['svelte']}),
+		production && terser()
+	]
+});
+
+bundles.push({
+	input: 'src/index.js',
+	output: { 
+		file: pkg.svelte, 
+		'format': 'es'
+	},
+	external:['svelte','svelte/store','aovi'],
+	plugins: [
 		production && terser()
 	]
 });
