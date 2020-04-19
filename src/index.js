@@ -29,11 +29,11 @@ export function aoviSvelte(obj){
         checker(name,chk){
             if(!obj.hasOwnProperty(name)) throw new Error(`Unknown property ${name}`)
             return derived(this,$obj => {
-                return chk(get_aovi($obj).check(name).required()).valid;
+                return chk(get_aovi($obj).check(name).required(),filterObject($obj)).valid;
             });
         },
         toObject(){
-            return Object.entries(obj).reduce((o,[n,v])=>reserved.includes(n) ? o : (o[n]=v,o),{})
+            return filterObject(obj);
         }
     }
 }
@@ -75,4 +75,8 @@ function makeErrorsFromResultArray(obj,result){
 
 function err2Array(errs){
     return Object.values(errs).filter(e=>typeof e === 'string');
+}
+
+function filterObject(obj){
+    return Object.entries(obj).reduce((o,[n,v])=>reserved.includes(n) ? o : (o[n]=v,o),{});
 }

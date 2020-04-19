@@ -3,11 +3,13 @@
 
     const vld = aoviSvelte({
         user: '',
-        password: ''
+        password: '',
+        confirm: ''
     });
 
-    const good_password = vld.checker('password',a => a.minLength(4));
+    const confirm_ok = vld.checker('confirm',(a,obj) => a.is( c => c===obj.password));
 
+    let registered = false;
     function doSubmit(){
         vld.aovi
             .check('user')
@@ -15,51 +17,90 @@
                 .minLength(4)
             .check('password')
                 .required()
+            .check('confirm')
+                .required()
+                .is(v => v===$vld.password,'is differ from password')
             .end
-    }
 
-    function doLoad(){
-        vld.load([
-            {name: 'password', error: 'Wrong password'}
-        ])
+        if($vld.valid){
+            registered=true;
+        }
     }
-
-    $: console.log($vld);
 </script>
 
-<p> User: <br/>
-    <input bind:value={$vld.user} class:error={$vld.err.user}/>
-</p>
+<div class="container">
+    {#if registered}
+        <h1>Success!</h1>
 
-<p> Password: <br/>
-    <input bind:value={$vld.password} class:error={$vld.err.password}  class:good={$good_password} />
-</p>
+        Registration complete.
+    {:else}
+    <h1>Register form</h1>
+
+    <p> User: <br/>
+        <input bind:value={$vld.user} class:error={$vld.err.user} on:focus={vld.clear}  />
+    </p>
+    
+    <p> Password: <br/>
+        <input type="password" bind:value={$vld.password} class:error={$vld.err.password} name="test"   class:good={$confirm_ok}  on:focus={vld.clear}/>
+    </p>
+
+    <p> Confirm: <br/>
+        <input type="password" bind:value={$vld.confirm} class:error={$vld.err.confirm}  class:good={$confirm_ok}  on:focus={vld.clear}/>
+    </p>
+
+    {#if !$vld.valid}
+    <p class="errortab">
+        {#each $vld.err.toArray() as error }
+            <div>{error}</div>
+        {/each}
+    </p>
+    {/if}
+
+    <p style="text-align: center"> 
+        <button on:click={doSubmit}>Register</button>
+    </p>
+    {/if}
+</div>
 
 
-<p class="errortab">
-    {#each $vld.err.toArray() as error }
-        <div>{error}</div>
-    {/each}
-</p>
 
-<p> 
-    <button on:click={doSubmit}>Submit</button>
-    <button on:click={doLoad}>Load</button>
-</p>
 
-<h1>Hello {$vld.user}!</h1>
 
 <style>
+    :global(body){
+        background-color: aliceblue;
+        font-size: 20px;
+    }
+
+    .container{
+        max-width: 600px;
+        background-color: white;
+        border-radius: 10px;
+        margin:20px auto;
+        padding:10px;
+        border: 1px solid silver;
+    }
+
+    input{
+        width:100%;
+        border: 2px solid silver;
+        border-radius: 5px;
+    }
+
     .error{
-        border: 1px solid red !important;
+        border-color: red !important;
+        background-color: #ffc6c6 !important;
     }
 
     .good{
-        border: 1px solid green;
+        border-color: green;
+        background-color: #adffaa;
     }
 
     .errortab{
-        border: 1px solid red;
+        border: 2px solid red;
+        padding: 10px;
         color: red;
+        border-radius: 5px;
     }
 </style>
