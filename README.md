@@ -1,9 +1,11 @@
 # aovi-svelte
 
 Easy using Aovi in your Svelte apps 
-<center>
-![Screencast](https://raw.githubusercontent.com/AlexxNB/aovi-svelte/master/screencast.gif "Screencast")
-</center>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AlexxNB/aovi-svelte/master/screencast.gif">
+</p>
+
 ## Common example
 
 ```html
