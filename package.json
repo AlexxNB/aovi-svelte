@@ -30,7 +30,7 @@
   "version": "0.1.0",
   "description": "Easy using Aovi in your Svelte apps.",
   "dependencies": {
-    "aovi": "^1.4.1"
+    "aovi": "^1.4.2"
   },
   "repository": {
     "type": "git",
