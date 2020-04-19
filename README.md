@@ -1,6 +1,6 @@
 # aovi-svelte
 
-Easy using Aovi in your Svelte apps 
+Easy using [Aovi](https://www.npmjs.com/package/aovi) in your Svelte apps 
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/AlexxNB/aovi-svelte/master/screencast.gif">
@@ -80,7 +80,9 @@ function authUser(req,res){
             method:'POST',
             body:JSON.stringify({password: $form.password})
         }); 
-        $form.load(await responce.json());
+
+        form.load(await responce.json());
+        
         if($form.valid){
             console.log('User authed!');
         }
