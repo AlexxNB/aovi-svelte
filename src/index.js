@@ -60,6 +60,7 @@ function addError(obj,error,name){
     if(name && !obj.hasOwnProperty(name)) return console.warn(`Got unknown property '${name}'`)
     obj.err[name||`noname_${id++}`] = error;
     obj.valid = false;
+    return obj;
 }
 
 function clearErrors(obj){
