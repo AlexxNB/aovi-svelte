@@ -32,8 +32,14 @@ export function aoviSvelte(obj){
                 return chk(get_aovi($obj).check(name).required(),filterObject($obj)).valid;
             });
         },
-        toObject(){
-            return filterObject(obj);
+        get(){
+            const args = Array.from(arguments);
+            return args.length ===  0 ?
+                filterObject(obj) :
+                Object
+                    .entries(filterObject(obj))
+                    .reduce((o,[n,v])=>args.includes(n) ? (o[n]=v,o) : o,{});
+            
         }
     }
 }

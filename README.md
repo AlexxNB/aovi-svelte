@@ -91,7 +91,7 @@ function authUser(req,res){
         // do request to the server
         const responce = await fetch('.../api/auth',{
             method:'POST',
-            body:JSON.stringify({password: $form.password}) //OR $form.toObject() to send all $form entries
+            body:JSON.stringify({password: $form.password}) //OR (form.get()) to send all $form entries
         }); 
 
         // load validation result from server and update the store
@@ -176,6 +176,9 @@ Returns aovi object to call validators. You *must* finish chain with `.end` oper
 
 ### `<store>.clear()`
 Clear all errors. Make `<$store>.valid` true;
+
+### `<store>.get([property][,property]...)`
+If no arguments specified, returns an initial object with current values. You can specify what properties should be in object by providing their names as a function arguments.
 
 ### `<store>.error(message,[property])`
 Add a new error message for the `property` in the store. If `property` ommited, add anonymus message, which will be appeared only in `<$store>.err.toArray()` call. Make `<$store>.valid` false;
