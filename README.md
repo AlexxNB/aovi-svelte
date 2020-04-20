@@ -6,6 +6,13 @@ Easy using [Aovi](https://www.npmjs.com/package/aovi) in your Svelte apps
   <img src="https://raw.githubusercontent.com/AlexxNB/aovi-svelte/master/screencast.gif">
 </p>
 
+## Features
+
+* Based on Svelte's store feature
+* One store may be used for different validation chains in same component(s)
+* Instant [checkers](#checkers) for any property in the store
+* Easy to use with aovi validator on the server side
+
 ## Common example
 
 ```html
@@ -55,14 +62,17 @@ Password:
 #### Server request handler
 ```js
 // handler for http-request with body_parser.json middleware
+const aovi = require('aovi');
 function authUser(req,res){
     const checkPassword = password => password === '12345';
 
-    let result  = aovi(req.body).
+    // Validate form object from request body(after body_parser.json
+    let result  = aovi(req.body)
         .check('password')
             .required()
             .is(checkPassword,"Wrong password");
 
+    // send responce as JSON string 
     res.end(result.toJSON())
 }
 ```
@@ -71,18 +81,23 @@ function authUser(req,res){
 ```html
 <script>
     import {aoviSvelte} from 'aovi-svelte';
+
+    // Create validation store
     const form = aoviSvelte({
         password: ''
     });
 
     async function doLogin(){
+        // do request to the server
         const responce = await fetch('.../api/auth',{
             method:'POST',
-            body:JSON.stringify({password: $form.password})
+            body:JSON.stringify({password: $form.password}) //OR $form.toObject() to send all $form entries
         }); 
 
+        // load validation result from server and update the store
         form.load(await responce.json());
         
+        // do some staff if validation was ok
         if($form.valid){
             console.log('User authed!');
         }
@@ -91,14 +106,14 @@ function authUser(req,res){
 
 Password: 
 <input bind:value={$form.password}/>
-{#if !#form.valid}{$form.err.password}{/if}
+{#if !$form.valid}{$form.err.password}{/if}
 
 <button on:click={doLogin}>Login</button>
 ```
 
 ## Checkers
 
-You can make special stores for any `property` which will return `true` or `false` each time value changes.
+Checkers are special stores derived from any `property` in the aoviSvelte store. Its subscription returns `true` or `false` each time the value changes.
 
 ```html
 <script>
@@ -107,6 +122,7 @@ You can make special stores for any `property` which will return `true` or `fals
         password: ''
     });
 
+    // checker will be true if password value is strong password.
     const good_password = form.checker('password',aovi => aovi.minlength(8).match(/[A-Z]/));
 </script>
 
@@ -116,6 +132,35 @@ You can make special stores for any `property` which will return `true` or `fals
 {:else}
     Please enter more than 8 signs and at least 1 capital letter.
 {/if}
+```
+
+## Custom validators
+
+You can use any [aovi custom validator](https://www.npmjs.com/package/aovi#custom-validators). The best way is to declare it in the your app's root file like `App.svelte`:
+
+```html
+<script>
+    ...
+    import {use} from 'aovi-svelte';
+    import {between} from './my-custom-validators.js';
+
+    ...
+    use(between);
+</script>
+```
+Then you can use this custom validator in the any chain in your other files.
+
+```html
+<script>
+    import {aoviSvelte} from 'aovi-svelte';
+    ...
+    form.aovi
+        .check('my_number')
+            .required()
+            .between(0,10);
+    ...
+</script>
+
 ```
 
 ## API
@@ -139,7 +184,7 @@ Add a new error message for the `property` in the store. If `property` ommited, 
 Load aovi's result array in the validation store. May be used when you got aovi validation responce from the sever.
 
 ### `<store>.checker(property,func)`
-Returns checker store, which has value `true` or `false`, based on the current value of the `property` and validation chain from `func`.  The func get aovi object as a parameter. You must chain validators (except `.required` and `.check` ) to this object and return it.
+Returns checker store, which has value `true` or `false`, based on the current value of the `property` and validation chain from `func`.  The `func` get aovi object as a first parameter, you must chain validators (except `.required` and `.check` ) to this object and return it. The second parameter is an object with all current values in the parent store for easy compare them inside the callback-function.
 
 ### `<$store>.valid`
 Equal `true` when no validation errors, `false` when there is at least one error occured.
