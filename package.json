@@ -27,7 +27,7 @@
   "files": [
     "dist"
   ],
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Easy using Aovi in your Svelte apps.",
   "dependencies": {
     "aovi": "^1.4.2"
