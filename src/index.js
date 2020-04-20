@@ -21,7 +21,7 @@ export function aoviSvelte(obj){
             });
             return a;
         },
-        error: ( error, name )=>addError(obj,error,name),
+        error: ( error, name )=>set(addError(obj,error,name)),
         load: result => {
             if(!Array.isArray(result)) return;
             set(makeErrorsFromResultArray(obj,result));
