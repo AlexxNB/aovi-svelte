@@ -6,6 +6,8 @@ Easy using [Aovi](https://www.npmjs.com/package/aovi) in your Svelte apps
   <img src="https://raw.githubusercontent.com/AlexxNB/aovi-svelte/master/screencast.gif">
 </p>
 
+*See in [REPL](https://svelte.dev/repl/90668378fbd4427792a5319b70d1f459)*
+
 ## Features
 
 * Based on Svelte's store feature
