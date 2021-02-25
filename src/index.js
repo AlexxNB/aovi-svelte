@@ -6,8 +6,13 @@ const reserved = ['err','valid'];
 let id = 0;
 
 export function aoviSvelte(obj){
-    if(obj.err || obj.valid) throw new Error('".err" and ".valid" properties are reserved for internal use');
+
+    for(let prop of reserved){
+        if(!!obj[prop]) throw new Error(`Name of property in object "${prop}" is reserved for internal use`);
+    }
+
     clearErrors(obj);
+    
     const {subscribe,set,update} = writable(obj);
 
     return {

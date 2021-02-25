@@ -1,17 +1,17 @@
 <script>
-    import {aoviSvelte} from './../dist/aovistore.svelte.js';
+    import {aoviSvelte} from 'aovi-svelte';
 
-    const vld = aoviSvelte({
+    const form = aoviSvelte({
         user: '',
         password: '',
         confirm: ''
     });
 
-    const confirm_ok = vld.checker('confirm',(a,obj) => a.is( c => c===obj.password));
+    const confirm_ok = form.checker('confirm',(a,obj) => a.is( c => c===obj.password));
 
     let registered = false;
     function doSubmit(){
-        vld.aovi
+        form.aovi
             .check('user')
                 .required()
                 .minLength(4)
@@ -19,10 +19,10 @@
                 .required()
             .check('confirm')
                 .required()
-                .is(v => v===$vld.password,'is differ from password')
+                .is(v => v===$form.password,'is differ from password')
             .end
 
-        if($vld.valid){
+        if($form.valid){
             registered=true;
         }
     }
@@ -37,20 +37,20 @@
     <h1>Register form</h1>
 
     <p> User: <br/>
-        <input bind:value={$vld.user} class:error={$vld.err.user} on:focus={vld.clear}  />
+        <input bind:value={$form.user} class:error={$form.err.user} on:focus={form.clear}  />
     </p>
     
     <p> Password: <br/>
-        <input type="password" bind:value={$vld.password} class:error={$vld.err.password} name="test"   class:good={$confirm_ok}  on:focus={vld.clear}/>
+        <input type="password" bind:value={$form.password} class:error={$form.err.password} name="test"   class:good={$confirm_ok}  on:focus={form.clear}/>
     </p>
 
     <p> Confirm: <br/>
-        <input type="password" bind:value={$vld.confirm} class:error={$vld.err.confirm}  class:good={$confirm_ok}  on:focus={vld.clear}/>
+        <input type="password" bind:value={$form.confirm} class:error={$form.err.confirm}  class:good={$confirm_ok}  on:focus={form.clear}/>
     </p>
 
-    {#if !$vld.valid}
+    {#if !$form.valid}
     <p class="errortab">
-        {#each $vld.err.toArray() as error }
+        {#each $form.err.toArray() as error }
             <div>{error}</div>
         {/each}
     </p>
