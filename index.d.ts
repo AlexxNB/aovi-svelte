@@ -1,23 +1,24 @@
 import {ValidationError,Aovi,AoviTestObject,ValidatorCreator} from 'aovi';
-import {derived} from 'svelte/store'
+import {Readable} from 'svelte/store'
 
 declare type Subscriber = (value: ValidationStore) => void;
 declare type CheckerFunc = (aovi:Aovi)=>Aovi;
 
-interface AoviExtended extends Aovi {
+declare type AoviExtended  = Aovi & {
     end:()=>void|Promise<void>
 }
 
-interface ValidationStore {
+declare interface ValidationStore {
     valid: boolean,
-    err: {
-        toArray: ()=>[ValidationError]
-        [key: string]:boolean|string
-    }
-    [key: string]: any,
+    err:{
+            toArray: ()=>[ValidationError]
+        }&{
+            [key: string]:boolean|string
+        }
+    [key: string]: any
 }
 
-interface AoviSvelte {
+declare interface AoviSvelte {
     /** Svelte store subscription */
     subscribe: Subscriber,
 
@@ -38,7 +39,7 @@ interface AoviSvelte {
      * If no arguments specified, returns an initial object with current values. 
      * You can specify what properties should be in object by providing their names as a function arguments.
      */
-    get: (...properties:string)=>Record<string,any>,
+    get: (...properties:[string])=>Record<string,any>,
 
     /** Add a new error message for the property in the store. 
      * If property ommited, add anonymus message, 
@@ -61,7 +62,7 @@ interface AoviSvelte {
      * @param property Name of the property which will be checked
      * @param func Checker function which get aovi object as a first parameter, you must chain validators (except .required and .check ) to this object and return it.
      * */
-    checker: (property:string,func:CheckerFunc)=>derived<Boolean>
+    checker: (property:string,func:CheckerFunc)=>Readable<Boolean>
 }
 
 /** Returns the aoviSvelte store 
