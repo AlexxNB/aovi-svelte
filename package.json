@@ -4,6 +4,7 @@
   "module": "dist/aovi.js",
   "cdn": "dist/aovi.min.js",
   "unpkg": "dist/aovi.min.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "node esbuild",
     "dev": "node --enable-source-maps esbuild --dev"
