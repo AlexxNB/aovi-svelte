@@ -75,7 +75,7 @@ function authUser(req,res){
             .is(checkPassword,"Wrong password");
 
     // send responce as JSON string 
-    res.end(result.toJSON())
+    res.end(result.json())
 }
 ```
 
@@ -189,7 +189,7 @@ Add a new error message for the `property` in the store. If `property` ommited, 
 Load aovi's result array in the validation store. May be used when you got aovi validation responce from the sever.
 
 ### `<store>.checker(property,func)`
-Returns checker store, which has value `true` or `false`, based on the current value of the `property` and validation chain from `func`.  The `func` get aovi object as a first parameter, you must chain validators (except `.required` and `.check` ) to this object and return it. The second parameter is an object with all current values in the parent store for easy compare them inside the callback-function.
+Returns checker store, which has value `true` or `false`, based on the current value of the `property` and validation chain from `func`.  The `func` get aovi object as a first parameter, you must chain validators (except `.required` and `.check` ) to this object and return it. 
 
 ### `<$store>.valid`
 Equal `true` when no validation errors, `false` when there is at least one error occured.
