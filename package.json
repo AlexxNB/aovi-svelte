@@ -23,7 +23,7 @@
     "form",
     "validator"
   ],
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Easy using Aovi in your Svelte apps.",
   "repository": {
     "type": "git",
