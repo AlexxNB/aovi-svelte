@@ -22,9 +22,6 @@
     "form",
     "validator"
   ],
-  "files": [
-    "dist"
-  ],
   "version": "0.2.2",
   "description": "Easy using Aovi in your Svelte apps.",
   "repository": {

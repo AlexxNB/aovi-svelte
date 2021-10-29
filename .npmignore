@@ -1,3 +1,8 @@
 src
+node_modules
 tests
 esbuild.js
+jsconfig.json
+screencast.gif
+.gitignore
+.github
